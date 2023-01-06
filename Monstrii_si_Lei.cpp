@@ -42,6 +42,10 @@ void Costuri::Randomizer(int nr)
         if(nr != 5 || nr !=3)
             throw nr;
     }
+    catch(int nr)
+    {
+        cout << "Invalid nr" << endl;
+    }
 
     if(nr == 5)
         num = NA + NF;
@@ -80,8 +84,7 @@ void Costuri::Randomizer(int nr)
         this->flex = c;
     }
 
-    catch(int nr)
-        cout << "Invalid nr" << endl;
+
 }
 
 string randomName(int length)
@@ -171,7 +174,9 @@ int main()
 {
     srand (time(NULL));
 
-    int nr_autocare, cost_autocare;
+    addExtra();
+
+    /*int nr_autocare, cost_autocare;
     int cost_machiaj;
 
     nr_autocare = Autocare();
@@ -179,7 +184,7 @@ int main()
     cout << cost_autocare << endl;
 
     cost_machiaj = Monstri();
-    cout << cost_machiaj << endl;
+    cout << cost_machiaj << endl;*/
 
     return 0;
 }
