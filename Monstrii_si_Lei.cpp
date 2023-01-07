@@ -4,6 +4,7 @@
 #include <vector>
 #include <iomanip>
 #include <stdlib.h>
+#include <sstream>
 
 using namespace std;
 
@@ -28,63 +29,186 @@ class Costuri
         int orice, veg, flex;
     
     public:
-        void Randomizer(int nr);
+        void Apetit();
+        void Machiaj();
+        void updateCSV(int rollnum, int index, string nou);
 };
 
-void Costuri::Randomizer(int nr)
+void Costuri::Apetit()
+{
+    int a=0,b=0,c=0;
+    int random;
+    int rollnum=1;
+
+    for(int i = 1; i <= N; i++)
+    {
+        random = rand() % 3;
+
+        if(random == 0)
+        {
+            a++;
+            updateCSV(rollnum, 2, "Apt sa manance orice");
+        }
+        else if(random == 1)
+        {
+            b++;
+            updateCSV(rollnum, 2, "Vegetarian");
+        }
+        else if(random == 2)
+        {
+            c++;
+            updateCSV(rollnum, 2, "Flexitarian");
+        }
+        rollnum++;
+    }
+
+    this->orice = a;
+    this->veg = b;
+    this->flex = c;
+
+}
+
+void Costuri::Machiaj()
 {
     int a=0,b=0,c=0,d=0,e=0;
     int random;
-    int num;
+    int rollnum=1;
 
-    try
+    for(int i = 1; i <= NA; i++)
     {
-        if(nr != 5 || nr !=3)
-            throw nr;
-    }
-    catch(int nr)
-    {
-        cout << "Invalid nr" << endl;
-    }
-
-    if(nr == 5)
-        num = NA + NF;
-    else if(nr == 3)
-        num = N;
-
-    for(int i = 1; i <= num; i++)
-    {
-        random = rand() % nr;
+        random = rand() % 5;
 
         if(random == 0)
+        {
             a++;
+            updateCSV(rollnum, 3, "Vampir");
+        }
         else if(random == 1)
+        {
             b++;
+            updateCSV(rollnum, 3, "Varcolac");
+        }
         else if(random == 2)
+        {
             c++;
+            updateCSV(rollnum, 3, "Sirena");
+        }
         else if(random == 3)
+        {
             d++;
+            updateCSV(rollnum, 3, "Clarvazator");
+        }
         else if(random == 4)
+        {
             e++;
+            updateCSV(rollnum, 3, "Om");
+        }
+        rollnum++;
     }
 
-    if(nr == 5)
+    rollnum = 736;
+
+    for(int i = 1; i <= N; i++)
     {
-        this->vamp = a;
-        this->var = b;
-        this->sir = c;
-        this->clar = d;
-        this->om = e;
+        random = rand() % 5;
+
+        if(random == 0)
+        {
+            a++;
+            updateCSV(rollnum, 3, "Vampir");
+        }
+        else if(random == 1)
+        {
+            b++;
+            updateCSV(rollnum, 3, "Varcolac");
+        }
+        else if(random == 2)
+        {
+            c++;
+            updateCSV(rollnum, 3, "Sirena");
+        }
+        else if(random == 3)
+        {
+            d++;
+            updateCSV(rollnum, 3, "Clarvazator");
+        }
+        else if(random == 4)
+        {
+            e++;
+            updateCSV(rollnum, 3, "Om");
+        }
+        rollnum++;
     }
 
-    else if(nr == 3)
+    this->vamp = a;
+    this->var = b;
+    this->sir = c;
+    this->clar = d;
+    this->om = e;
+}
+
+void Costuri::updateCSV(int rollnum, int index, string nou)
+{
+	fstream fin, fout;
+
+	fin.open("wednesdayCast.csv", ios::in);
+
+	fout.open("wednesdayCastnew.csv", ios::out);
+
+	int roll1 = 0, count = 0, i;
+	string line, word;
+	vector<string> row;
+
+	while (!fin.eof())
     {
-        this->orice = a;
-        this->veg = b;
-        this->flex = c;
-    }
 
+		row.clear();
 
+		getline(fin, line);
+		stringstream s(line);
+
+		while (getline(s, word, ','))
+        {
+			row.push_back(word);
+		}
+
+		roll1++;
+		int row_size = row.size();
+
+		if (roll1 == rollnum)
+        {
+			row[index] = nou;
+
+			if (!fin.eof())
+            {
+				for (i = 0; i < row_size - 1; i++)
+                {
+					fout << row[i] << ",";
+				}
+
+				fout << row[row_size - 1] << "\n";
+			}
+		}
+		else
+        {
+			if (!fin.eof())
+            {
+				for (i = 0; i < row_size - 1; i++)
+                {
+					fout << row[i] << ",";
+				}
+				fout << row[row_size - 1] << "\n";
+			}
+		}
+		if (fin.eof())
+			break;
+	}
+
+	fin.close();
+	fout.close();
+
+	remove("wednesdayCast.csv");
+	rename("wednesdayCastnew.csv", "wednesdayCast.csv");
 }
 
 string randomName(int length)
@@ -125,7 +249,7 @@ void addToCSV(string name, string surname)
 
     fout.open("wednesdayCast.csv", ios::out | ios::app);
 
-    fout << name << " " << surname << "," << "extra" << "\n";
+    fout << name << " " << surname << "," << "extra" << ", , " << "\n";
 
     fout.close();
 }
@@ -175,6 +299,10 @@ int main()
     srand (time(NULL));
 
     addExtra();
+
+    Costuri pret;
+    pret.Apetit();
+    pret.Machiaj();
 
     /*int nr_autocare, cost_autocare;
     int cost_machiaj;
