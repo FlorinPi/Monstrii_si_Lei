@@ -357,7 +357,8 @@ string randomName(int length)
     return name;
 }
 
-void addToCSV(string name, string surname)
+template <typename X>
+void addToCSV(X name, X surname)
 {
     fstream fout;
 
@@ -383,17 +384,30 @@ void addExtra()
         surname = randomName(length);
         surname[0] = toupper(surname[0]);
         
-        addToCSV(name,surname);
+        addToCSV<string>(name,surname);
     }
 }
 
+void Meniu()
+{
+    fstream fout;
 
+    fout.open("Meniu.csv", ios::out | ios::app);
+
+    fout << "Meniu" << "," << "zi 1: ciorba" << "," << "fel principal" << "," << "desert" << "," << "zi 2: ciorba" << "," << "fel principal" << "," << "desert" << "," << "zi 3: ciorba" << "," << "fel principal" << "," << "desert" << "\n";
+    fout << "Apt sa manance orice" << "," << "supa de pui" << "," << "cotlet de porc" << "," << "clatite" << "," << "ciorba de perisoare" << "," << "piept de pui la gratar" << "," << "papanasi" << "," << "ciorba de vacuta" << "," << "carnati de oaie" << "," << "tiramisu" << "\n";
+    fout << "Vegetarian" << "," << "supa de minestrone vegetariana" << "," << "rizoto cu ciuperci" << "," << "gogosi" << "," << "ciorba de fasole" << "," << "paste cu tofu" << "," << "biscuiti cu ovaz" << "," << "supa crema de morcovi" << "," << "Orez cu legume" << "," << "placinta cu visine" << "\n";
+    fout << "Flexitarian" << "," << "bors de peste" << "," << "vinete coapte" << "," << "strudel de mere" << "," << "supa crema de ciuperci" << "," << "somon la gratar" << "," << "cozonac" << "," << "supa crema de rosii" << "," << "sushi" << "," << "budinca de afine" << "\n";
+
+    fout.close();
+}
 
 int main()
 {
     srand (time(NULL));
 
     addExtra();
+    Meniu();
 
     Costuri pret;
     pret.Autocare();
@@ -404,6 +418,7 @@ int main()
     pret.Castel();
     pret.Dolari(0.216);
     pret.CSV();
-
+    
+    
     return 0;
 }
